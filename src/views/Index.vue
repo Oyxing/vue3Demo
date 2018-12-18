@@ -38,7 +38,7 @@ export default class Index extends Vue {
      ]
     created(){
       this.tableData = []
-      for (var i = 0 ; i < 50; i++){
+      for (var i = 0 ; i < 44; i++){
           this.tableData.push({
               date: '2016-05-02',
               name: '王小虎'+i,

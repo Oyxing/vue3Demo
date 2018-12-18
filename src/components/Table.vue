@@ -55,21 +55,32 @@ export default class TableView extends Vue {
       this.tabledata.length < 10?0:10,this.tabledata.length>10?15:0,this.tabledata.length>15?20:0,this.tabledata.length>20?30:0,this.tabledata.length>30?this.tabledata.length:0
     ];
     total:number = this.tabledata.length;
+
     created() {
         this.newData = this.disposechunk(this.tabledata,10)
         this.chunk =  this.newData[0]
     }
+    //  一页多少个 
     handleSizeChange(val:any){
         this.pagesizenum = val
         this.pagesize = val
-        this.newData = this.disposechunk(this.tabledata,val)
-        this.chunk =  this.newData[this.currentid]
+        if(val == this.tabledata.length){
+          this.chunk = this.tabledata
+        }else{
+          this.currentPage = 1
+          this.newData = this.disposechunk(this.tabledata,this.pagesizenum)
+          this.chunk =  this.newData[0]
+        }
     }
+    // 第几页
     handleCurrentChange(val:any){
-        this.currentPage = val
         this.currentid = val-1
-        this.newData = this.disposechunk(this.tabledata,this.pagesizenum)
-        this.chunk = this.newData[this.currentid]
+        this.chunk = this.changechunk
+        this.currentPage = val
+    }
+    get changechunk(){
+      this.newData = this.disposechunk(this.tabledata,this.pagesizenum)
+      return this.newData[this.currentid]
     }
     disposechunk(arr:Array<any>,size:number) {
       var newarr=[];
