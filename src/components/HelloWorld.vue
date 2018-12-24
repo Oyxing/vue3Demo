@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    
     <h1>{{ msg }}</h1>
      <h1>{{msgdata}}</h1>
      <input type="checkbox"  :checked=checked @change="changed"/> 
@@ -15,11 +14,18 @@
         <el-button type="primary" @click="funName(list)">点击</el-button>
         <el-button type="primary" @click="identity(1)">泛型</el-button>
         <el-button type="primary" @click="test()">测试</el-button>
+        <el-tag type="danger"><slot name="hello" text="我是helloddd" text1="组件的数据"></slot></el-tag>
+        
+        <slot name="hellos" text="我是hellos" text1="组件的数据"></slot>
   </div>
 </template>
 
 <script lang="ts">
+import { Tag,Button } from 'element-ui'
 import { Component, Prop,Model,Inject, Vue } from 'vue-property-decorator';
+Vue.use(Button)
+Vue.use(Tag)
+
 // 枚举
 enum Direction {
     Up = "Up",
@@ -40,6 +46,11 @@ export default class HelloWorld extends Vue {
   @Prop()
   @Model('change') checked!: boolean
  
+  created(){
+  
+    // this.$root.newvue.str = "你好"
+    
+  }
   changed(ev:any) {
       this.label = ev.target.checked
   };
@@ -64,8 +75,6 @@ export default class HelloWorld extends Vue {
       x = y;
       console.log("x",x)
   }
-
-
 
 }
 

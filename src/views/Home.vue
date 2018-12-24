@@ -2,7 +2,14 @@
   <div class="home">
    
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue App"/>
+    <HelloWorld msg="Welcome to Your Vue App">
+      <template slot="hello" slot-scope="scope" >
+        <div>
+          {{scope}}
+          <el-button>{{scope.text}}</el-button>
+        </div>
+      </template>
+    </HelloWorld>
   </div>
 </template>
 
