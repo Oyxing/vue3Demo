@@ -7,14 +7,15 @@
         :tableColumn="tableColumn" 
         :pagination="pagination" 
         :searchField="searchField"
+        :selection="{type:'selection',width:'55',fixed:true}"
         :border="true"
      >
       <template slot="action" slot-scope="scope">
         <el-button type="primary" @click="funName(scope)">点击</el-button>
       </template>
       <template slot="status" slot-scope="scope">
-        <el-tag v-if="scope.status">{{scope.status}}偶数</el-tag>
-        <el-tag v-else>{{scope.status}}奇数</el-tag>
+        <el-tag v-if="scope.row.status">偶数</el-tag>
+        <el-tag v-else>奇数</el-tag>
       </template>
      </Table>
   </div>
@@ -33,13 +34,11 @@ import Table from '@/components/Table.vue'
 export default class Index extends Vue {
      tableData: Array<any> =  []
      tableColumn:Array<any> = [
-       {type:"selection",width:"55",fixed:true},
        {prop:"date", label:"日期",width:"",sortable:true},
-       {prop:"status",label:"状态"},
        {prop:"name", label:"姓名",width:""},
        {prop:"address",label:"地址",width:""},
-       {type:"amend",name:"status",label:"状态"},
-       {type:"amend",name:"action",label:"操作"},
+       {name:"status",label:"状态"},
+       {name:"action",label:"操作"},
      ]
      searchField:Array<any> = [
         {value:"name",label:"姓名"},

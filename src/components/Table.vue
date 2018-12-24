@@ -38,18 +38,16 @@
               :height="height"
               style="width: 100%;margin-top:20px;">
                <el-table-column
-                v-for="(item,index) in tableColumn" :key="index"
-                v-if="item.type == 'selection'"
-                :type="item.type"
-                :fixed="item.fixed"
-                :width="item.width?item.width:''"
-                :align="item.align?item.align:''"
-                :header-align="item.headerAlign?item.headerAlign:''"
+                 v-if="selection"
+                :type="selection.type"
+                :fixed="selection.fixed"
+                :width="selection.width"
+                :align="selection.align"
+                :header-align="selection.headerAlign"
               >
               </el-table-column>
               <el-table-column
                 v-for="(item,index) in tableColumn" :key="index"
-                v-if="item.type != 'selection'"
                 :prop="item.prop" 
                 :fixed="item.fixed"
                 :sortable="item.sortable"
@@ -59,10 +57,8 @@
                 :header-align="item.headerAlign"
               >
                 <template slot-scope="scope">
-                    <slot v-if="item.type == 'amend'" :name="item.name" :scope="scope.row"></slot>
-                    <span v-else>
+                    <slot :name="item.name" :row="scope.row"></slot>
                       {{scope.row[item.prop]}}
-                    </span>
                 </template>
               </el-table-column>
             </el-table>
@@ -100,12 +96,13 @@ export default class TableView extends Vue {
     @Prop() pagination!: any ;
     @Prop() border!: boolean ;
     @Prop() height!: string;
+    @Prop() selection!: any;
     
     searchnames:string = "";
     searchdates:string = "";
     searchname:string = this.searchField?this.searchField[0].value:"name"
     newtable!:Array<any>
-    pagesize:number = 10
+    pagesize:number = 5
     total!:number
     currentPage: number = 1 ;
     pageSizes!:Array<any>;
@@ -133,6 +130,7 @@ export default class TableView extends Vue {
     handleCurrentChange(val:any){
         this.currentPage = val
     }
+    // 在经过 分页  和 搜索 时   数据改变
     chagedata(tableData:Array<any>){
         var newtableData =  tableData.filter(
           data =>  
