@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-        <h1 >{{msgdata}}</h1>
+        <!-- <h1 >{{msgdata}}</h1>
      <input type="checkbox"  :checked=checked @change="changed"/> 
       <ul>
         <li v-for="(item,index) in list" :key="index">
@@ -14,7 +14,7 @@
         <el-button type="primary" @click="identity(1)">泛型</el-button>
         <el-button type="primary" @click="test()">测试</el-button>
         <slot name="hello" text="我是helloddd" text1="组件的数据"></slot>
-        <slot name="hellos"></slot>
+        <slot name="hellos"></slot> -->
         <h1>{{ msg }}</h1>
   </div>
 </template>
@@ -45,7 +45,8 @@ export default class HelloWorld extends Vue {
   @Prop()
   @Model('change') checked!: boolean
   created(){
-  
+    console.log("this.msg")
+    console.log(this.msg)
     // this.$root.newvue.str = "你好"
     this.asyncfun()
   }
@@ -92,6 +93,7 @@ export default class HelloWorld extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus">
+@import "../assets/css/lib/theme-chalk/index.css";
 h3
   margin 40px 0 0
 

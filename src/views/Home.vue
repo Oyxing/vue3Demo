@@ -14,7 +14,7 @@
 import { Input,Button } from 'element-ui'
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
-
+Vue.use(Input)
 @Component({
   components: {
     HelloWorld,

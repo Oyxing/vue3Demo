@@ -5,8 +5,8 @@
         @table-click="tableClick" 
         :tableData="tableData"
         :tableColumn="tableColumn" 
-        :pagination="pagination" 
         :searchContent="searchContent"
+        :pagination="pagination" 
         :selection="{type:'selection',width:'55',fixed:true}"
         :border="true"
      >
@@ -70,7 +70,11 @@ export default class Index extends Vue {
      ]
      pagination: any  = {
         layout:"total, sizes, prev, pager, next, jumper",
-        pagerCount:5
+        pagerCount:5,
+        style:{
+          margin: "10px",
+          float: "right"
+        }
      }
     created(){
       this.tableData = []

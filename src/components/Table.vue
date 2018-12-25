@@ -1,9 +1,8 @@
 <template>
   <div class="table">
-         
             <slot name="searchview"></slot>
             <el-table
-              :border="border"
+              :border="border?border:false"
               :data="layout?chagedata(tableData):tableData"
               @selection-change="handleSelectionChange"
               @cell-mouse-leave="cellMouseLeave"
@@ -18,7 +17,7 @@
                <el-table-column
                  v-if="selection"
                 :type="selection.type"
-                :fixed="selection.fixed"
+                :fixed="selection.fixed?selection.fixed:false"
                 :width="selection.width"
                 :align="selection.align"
                 :header-align="selection.headerAlign"
@@ -27,7 +26,7 @@
               <el-table-column
                 v-for="(item,index) in tableColumn" :key="index"
                 :prop="item.prop" 
-                :fixed="item.fixed"
+                :fixed="item.fixed?item.fixed:false"
                 :sortable="item.sortable"
                 :label="item.label"
                 :width="item.width"
@@ -46,6 +45,7 @@
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
               :page-sizes="[5,10,15,20,30]"
+              :style="pagination.style"
               :page-size.sync="pagesize"
               prev-text="上一页"
               next-text="下一页"
@@ -73,33 +73,21 @@ interface searchContent {
 }
     
 @Component   
-export default class TableView extends Vue {
-    @Prop() tableData!: Array<any> ;
-    @Prop() tableColumn!: Array<any> ;
-    @Prop() searchContent!: searchContent ;
-    @Prop() pagination!: any ;
-    @Prop() border!: boolean ;
-    @Prop() height!: string;
-    @Prop() selection!: any;
-    newtable!:Array<any>
+export default class TableView extends Vue { 
+    @Prop({default:false}) private searchContent!: searchContent;
+    @Prop() private tableData!: Array<any> ;
+    @Prop() private tableColumn!: Array<any> ;
+    @Prop() private pagination!: any ; 
+    @Prop() private border!: boolean ;
+    @Prop() private height!: string;
+    @Prop() private selection!: any;
     pagesize:number = 5
     total!:number
     currentPage: number = 1 ;
-    pageSizes!:Array<any>;
     pagerCount:number = this.pagination?this.pagination.pagerCount?this.pagination.pagerCount:5:5;
     layout:string = this.pagination?this.pagination.layout?this.pagination.layout:"total, sizes, prev, pager, next, jumper":"";
     created() {
-        this.setTableData(this.tableData)
-    }
-    setTableData(tableData:any){
-        this.newtable = tableData
-        this.pageSizes = [
-            this.newtable.length < 10?0:10,
-            this.newtable.length>10?15:0,
-            this.newtable.length>15?20:0,
-            this.newtable.length>20?30:0,
-            this.newtable.length>30?this.newtable.length:0
-        ];
+        console.log(this.tableData)
     }
     //  一页多少个 
     handleSizeChange(val:any){
@@ -164,3 +152,6 @@ export default class TableView extends Vue {
     }
 } 
 </script>
+<style scoped lang="stylus">
+@import "../assets/css/lib/theme-chalk/index.css";
+</style>
