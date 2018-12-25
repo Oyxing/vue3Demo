@@ -2,18 +2,16 @@
   <div class="home">
    
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue App">
-      <template slot="hello" slot-scope="scope" >
-        <div>
-          {{scope}}
-          <el-button>{{scope.text}}</el-button>
-        </div>
-      </template>
+    <HelloWorld :msg="msg">
+      <div slot="hellos" slot-scope="scope">
+        <el-input v-model="msg"></el-input>
+      </div>
     </HelloWorld>
   </div>
 </template>
 
 <script lang="ts">
+import { Input,Button } from 'element-ui'
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 
@@ -22,5 +20,11 @@ import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
     HelloWorld,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  data(){
+    return {
+      msg:"Welcome to Your Vue App"
+    }
+  }
+}
 </script>

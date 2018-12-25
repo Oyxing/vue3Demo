@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-     <h1>{{msgdata}}</h1>
+        <h1 >{{msgdata}}</h1>
      <input type="checkbox"  :checked=checked @change="changed"/> 
       <ul>
         <li v-for="(item,index) in list" :key="index">
@@ -14,9 +13,9 @@
         <el-button type="primary" @click="funName(list)">点击</el-button>
         <el-button type="primary" @click="identity(1)">泛型</el-button>
         <el-button type="primary" @click="test()">测试</el-button>
-        <el-tag type="danger"><slot name="hello" text="我是helloddd" text1="组件的数据"></slot></el-tag>
-        
-        <slot name="hellos" text="我是hellos" text1="组件的数据"></slot>
+        <slot name="hello" text="我是helloddd" text1="组件的数据"></slot>
+        <slot name="hellos"></slot>
+        <h1>{{ msg }}</h1>
   </div>
 </template>
 
@@ -45,11 +44,10 @@ export default class HelloWorld extends Vue {
   msgdata:String = "你好"
   @Prop()
   @Model('change') checked!: boolean
- 
   created(){
   
     // this.$root.newvue.str = "你好"
-    
+    this.asyncfun()
   }
   changed(ev:any) {
       this.label = ev.target.checked
@@ -61,13 +59,11 @@ export default class HelloWorld extends Vue {
     console.log("arr")
     console.log(arr)
   }
-
   // 泛型  
   identity = function <T>(arg: T): T {
       let arr = [1,2,3,4];
       return arg;
   }
-
   test = function(){
       console.log(Direction.Right)
       let x: Named;
@@ -76,8 +72,22 @@ export default class HelloWorld extends Vue {
       console.log("x",x)
   }
 
+  asyncfun = function(){
+      Promise.all([
+          new Promise(function(resolve, reject) {
+            resolve(1)
+          }),
+          new Promise(function(resolve, reject) {
+            resolve(2)
+          }),
+          new Promise(function(resolve, reject) {
+            resolve(3)
+          })
+        ]).then(arr => {
+          console.log(arr) // [1, 2, 3]
+        })
+  }
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

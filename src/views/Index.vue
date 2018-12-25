@@ -6,10 +6,30 @@
         :tableData="tableData"
         :tableColumn="tableColumn" 
         :pagination="pagination" 
-        :searchField="searchField"
+        :searchContent="searchContent"
         :selection="{type:'selection',width:'55',fixed:true}"
         :border="true"
      >
+     <template slot="searchview">
+        <el-row :gutter="10">
+            <el-col :span="6">   
+              <el-select v-model="searchContent.searchindexes"  size="mini" placeholder="请选择">
+                <el-option
+                  v-for="item in searchField"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="5">
+                <el-input
+                  v-model="searchContent.searchvalue"
+                  size="mini"
+                  placeholder="输入关键字搜索names"/>
+            </el-col>
+          </el-row>
+     </template>
       <template slot="action" slot-scope="scope">
         <el-button type="primary" @click="funName(scope)">点击</el-button>
       </template>
@@ -40,6 +60,10 @@ export default class Index extends Vue {
        {name:"status",label:"状态"},
        {name:"action",label:"操作"},
      ]
+     searchContent:Object = {
+       "searchindexes":"name",
+       "searchvalue":""
+     }
      searchField:Array<any> = [
         {value:"name",label:"姓名"},
         {value:"date",label:"日期"}

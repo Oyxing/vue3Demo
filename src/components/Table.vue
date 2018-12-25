@@ -1,29 +1,7 @@
 <template>
   <div class="table">
-          <el-row>
-            <el-col :span="6">  
-              <el-select v-if="searchField" v-model="searchname"  size="mini" placeholder="请选择">
-                <el-option
-                  v-for="item in searchField"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="6">
-              <el-input
-                v-model="searchnames"
-                size="mini"
-                placeholder="输入关键字搜索names"/>
-                </el-col>
-                 <el-col :span="6">
-                    <el-input
-                v-model="searchdates"
-                size="mini"
-                placeholder="输入关键字搜索dates"/>
-                </el-col>
-          </el-row>
+         
+            <slot name="searchview"></slot>
             <el-table
               :border="border"
               :data="layout?chagedata(tableData):tableData"
@@ -88,19 +66,21 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(Select)
 Vue.use(Pagination)
+
+interface searchContent {
+    searchindexes: string;
+    searchvalue: string;
+}
+    
 @Component   
 export default class TableView extends Vue {
     @Prop() tableData!: Array<any> ;
     @Prop() tableColumn!: Array<any> ;
-    @Prop() searchField!: Array<any> ;
+    @Prop() searchContent!: searchContent ;
     @Prop() pagination!: any ;
     @Prop() border!: boolean ;
     @Prop() height!: string;
     @Prop() selection!: any;
-    
-    searchnames:string = "";
-    searchdates:string = "";
-    searchname:string = this.searchField?this.searchField[0].value:"name"
     newtable!:Array<any>
     pagesize:number = 5
     total!:number
@@ -132,11 +112,11 @@ export default class TableView extends Vue {
     }
     // 在经过 分页  和 搜索 时   数据改变
     chagedata(tableData:Array<any>){
-        var newtableData =  tableData.filter(
-          data =>  
-          (!this.searchnames || data.date.toLowerCase().includes(this.searchdates.toLowerCase()))
-          &&  (!this.searchdates || data.name.toLowerCase().includes(this.searchnames.toLowerCase()))
-          )
+        // 索引
+        const searchindexes = this.searchContent.searchindexes ||  "name"
+        // 搜索的值
+        const searchvalue = this.searchContent.searchvalue
+        var newtableData =  tableData.filter(data => (!searchvalue || data[searchindexes].toLowerCase().includes(searchvalue.toLowerCase())))
         this.total = newtableData.length
         return newtableData.length > 10?newtableData.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize):newtableData
     }
