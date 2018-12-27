@@ -1,13 +1,13 @@
 <template>
   <div class="index">
     <h1>表单d</h1>
-    <Table 
-        @table-click="tableClick" 
-        :tableData="tableData"
-        :tableColumn="tableColumn" 
-        :searchContent="searchContent"
+    <PackTables 
+        @table-selection-change="tableselectionChange"
+        :data="tableData" 
+        :column="tableColumn" 
+        :searchcontent="searchContent"
         :pagination="pagination" 
-        :selection="{type:'selection',width:'55',fixed:true}"
+        :selection="{type:'selection',width:'55'}"
         :border="true"
      >
      <template slot="searchview">
@@ -31,13 +31,13 @@
           </el-row>
      </template>
       <template slot="action" slot-scope="scope">
-        <el-button type="primary" @click="funName(scope)">点击</el-button>
+        <el-button round type="primary" @click="funName(scope)">点击</el-button>
       </template>
       <template slot="status" slot-scope="scope">
         <el-tag v-if="scope.row.status">偶数</el-tag>
         <el-tag v-else>奇数</el-tag>
       </template>
-     </Table>
+     </PackTables>
   </div>
 </template>
 <script lang="ts">
@@ -70,7 +70,7 @@ export default class Index extends Vue {
      ]
      pagination: any  = {
         layout:"total, sizes, prev, pager, next, jumper",
-        pagerCount:5,
+        pagesize:11,
         style:{
           margin: "10px",
           float: "right"

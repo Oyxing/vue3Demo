@@ -1,11 +1,7 @@
 <template>
   <div class="home">
-   
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld :msg="msg">
-      <div slot="hellos" slot-scope="scope">
-        <el-input v-model="msg"></el-input>
-      </div>
+    <HelloWorld :msg="msg" :msgjson="msgjson" :msgarr="[1,2,3,3,4,2]">
     </HelloWorld>
   </div>
 </template>
@@ -21,10 +17,26 @@ Vue.use(Input)
   },
 })
 export default class Home extends Vue {
-  data(){
-    return {
-      msg:"Welcome to Your Vue App"
+    data(){
+      return {
+        msg:[{"date":"201632","name":"王小红0","status":0,"address":"上海市普陀区金沙江路 1518 弄"}],
+        msgjson:{"date":"201632","name":"王小红0","status":0,"address":"上海市普陀区金沙江路 1518 弄"}
+      }
     }
-  }
+    created(){
+        this.getjsonps()
+    }
+    getjsonps(){
+      console.log(this)
+      //   this.$jsonp('http://localhost:8033/API/GetUser', { id:2 }).then((json:any) => {
+      //     console.log("json")
+      //     console.log(json)
+      //   // Success.
+      // }).catch((err:any) => {
+      //   // Failed.
+      //     console.log("err")
+      //     console.log(err)
+      // })
+    }
 }
 </script>

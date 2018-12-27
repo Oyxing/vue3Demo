@@ -3,7 +3,7 @@
             <slot name="searchview"></slot>
             <el-table
               :border="border?border:false"
-              :data="layout?chagedata(tableData):tableData"
+              :data="pagination?chagedata(data):data"
               @selection-change="handleSelectionChange"
               @cell-mouse-leave="cellMouseLeave"
               @cell-mouse-enter="cellMouseEnter"
@@ -24,7 +24,7 @@
               >
               </el-table-column>
               <el-table-column
-                v-for="(item,index) in tableColumn" :key="index"
+                v-for="(item,index) in column" :key="index"
                 :prop="item.prop" 
                 :fixed="item.fixed?item.fixed:false"
                 :sortable="item.sortable"
@@ -40,12 +40,12 @@
               </el-table-column>
             </el-table>
             <el-pagination
-              v-if="pagination"
+              v-if="paginationshow"
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
               :page-sizes="[5,10,15,20,30]"
-              :style="pagination.style"
+              :style="style"
               :page-size.sync="pagesize"
               prev-text="上一页"
               next-text="下一页"
@@ -56,6 +56,8 @@
   </div>
 </template>
 <script lang="ts">
+
+
 import { Table,TableColumn,Row,Pagination,Col,Input,Select,Option } from 'element-ui'
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 Vue.use(Table)
@@ -71,23 +73,25 @@ interface searchContent {
     searchindexes: string;
     searchvalue: string;
 }
-    
+
+
 @Component   
 export default class TableView extends Vue { 
-    @Prop({default:false}) private searchContent!: searchContent;
-    @Prop() private tableData!: Array<any> ;
-    @Prop() private tableColumn!: Array<any> ;
-    @Prop() private pagination!: any ; 
-    @Prop() private border!: boolean ;
-    @Prop() private height!: string;
-    @Prop() private selection!: any;
-    pagesize:number = 5
+    @Prop({default:false}) private searchcontent!: searchContent;
+    @Prop() data!: Array<any> ;
+    @Prop() column!: Array<any> ;
+    @Prop() pagination!: any ; 
+    @Prop() border!: boolean ;
+    @Prop() height!: string;
+    @Prop() selection!: any;
+    paginationshow:boolean = false;
     total!:number
     currentPage: number = 1 ;
-    pagerCount:number = this.pagination?this.pagination.pagerCount?this.pagination.pagerCount:5:5;
+    pagerCount:number = 5;
+    style:any = this.pagination?this.pagination.style?this.pagination.style:{}:{};
+    pagesize:number = this.pagination?this.pagination.pagesize?this.pagination.pagesize:5:5;
     layout:string = this.pagination?this.pagination.layout?this.pagination.layout:"total, sizes, prev, pager, next, jumper":"";
     created() {
-        console.log(this.tableData)
     }
     //  一页多少个 
     handleSizeChange(val:any){
@@ -99,12 +103,15 @@ export default class TableView extends Vue {
         this.currentPage = val
     }
     // 在经过 分页  和 搜索 时   数据改变
-    chagedata(tableData:Array<any>){
+    chagedata(tabledata:Array<any>){
+        if(this.pagination.layout){
+            this.paginationshow = true
+        }
         // 索引
-        const searchindexes = this.searchContent.searchindexes ||  "name"
+        const searchindexes = this.searchcontent.searchindexes ||  "name"
         // 搜索的值
-        const searchvalue = this.searchContent.searchvalue
-        var newtableData =  tableData.filter(data => (!searchvalue || data[searchindexes].toLowerCase().includes(searchvalue.toLowerCase())))
+        const searchvalue = this.searchcontent.searchvalue
+        var newtableData =  tabledata.filter(tabledata => (!searchvalue || tabledata[searchindexes].toLowerCase().includes(searchvalue.toLowerCase())))
         this.total = newtableData.length
         return newtableData.length > 10?newtableData.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize):newtableData
     }
@@ -143,14 +150,25 @@ export default class TableView extends Vue {
     }
     // 时间添加
     handleEvent(event:any,row:any,name:string,column:any,cell:any){
+
      if(cell){
         if(column){
           this.$emit(`table-${name}`, row, event, column,cell);
+          return
         }
       }
       this.$emit(`table-${name}`, row, event, column);
+        console.log("row")
+        console.log(row)
     }
 } 
+// 定义 Table 对象
+const PackTable={
+    // install 是默认的方法。当外界在 use 这个组件的时候，就会调用本身的 install 方法，同时传一个 Vue 这个类的参数。
+    install:function(Vue:any){
+        Vue.component('Table',TableView)
+    }
+}
 </script>
 <style scoped lang="stylus">
 @import "../assets/css/lib/theme-chalk/index.css";
