@@ -7,7 +7,7 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes: [
+  routes: [ 
     {
       path: '/',
       name: 'home',
@@ -22,6 +22,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: () => import('./views/About.vue')
+    },
+    {
+      path: '/opendialog',
+      name: 'opendialog',
+      component: () => import('./views/OpenDialog.vue')
     }
   ]
 })

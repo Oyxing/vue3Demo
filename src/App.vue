@@ -4,6 +4,7 @@
         <router-link to="/" tag="li">首页</router-link>
         <router-link to="/index" tag="li">表格</router-link>
         <router-link to="/about" tag="li">关于</router-link>
+        <router-link to="/opendialog" tag="li">窗口</router-link>
       </ul>
       <router-view class="routerview"/>
   </div>

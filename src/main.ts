@@ -4,7 +4,10 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import './plugins/element.js'
-import './plugins/VueJsonp.js'
+import './plugins/vueJsonp.js'
+import './plugins/getsocket.js'
+
+
 
 Vue.config.productionTip = false
 // 引入组件

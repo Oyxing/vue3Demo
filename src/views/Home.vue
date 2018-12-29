@@ -27,16 +27,7 @@ export default class Home extends Vue {
         this.getjsonps()
     }
     getjsonps(){
-      console.log(this)
-      //   this.$jsonp('http://localhost:8033/API/GetUser', { id:2 }).then((json:any) => {
-      //     console.log("json")
-      //     console.log(json)
-      //   // Success.
-      // }).catch((err:any) => {
-      //   // Failed.
-      //     console.log("err")
-      //     console.log(err)
-      // })
+       console.log(this)
     }
 }
 </script>
