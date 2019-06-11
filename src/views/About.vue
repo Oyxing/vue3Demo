@@ -6,13 +6,17 @@
     <el-button @click="jsonp('http://localhost:8033/API/GetUser?id=2&')">点击jsonp</el-button>
 
   <br>
+  <span>
+  {{msgdata}}
+
+  </span>
   <br>
     <el-radio-group v-model="radio" @change="change">
+      <el-radio :label="1">备选项</el-radio>
+      <el-radio :label="2">备选项</el-radio>
       <el-radio :label="3">备选项</el-radio>
-      <el-radio :label="6">备选项</el-radio>
-      <el-radio :label="9">备选项</el-radio>
     </el-radio-group>
-
+  
   </div>
 </template>
 <script lang="ts">
@@ -26,8 +30,10 @@ export default class About extends Vue{
     radio:number = 3
     ws!:any
     msg!:string
+    msgdata!:any
     created(){
-          var ws = new WebSocket('ws://localhost:8001');
+      console.log(this)
+          var ws = new WebSocket('ws://10.1.1.143:8001');
           ws.onopen = (e)=>{
               this.msg = "连接服务器成功"
               ws.send("连接服务器成功");
@@ -35,6 +41,11 @@ export default class About extends Vue{
           ws.onclose = (e)=>{
               console.log("服务器关闭");
               console.log(e);
+          }
+          ws.onmessage = (e)=>{
+              console.log("onmessage");
+              console.log(e.data);
+              this.msgdata = e.data
           }
           ws.onerror = (e)=>{
               console.log("连接出错");
@@ -46,6 +57,8 @@ export default class About extends Vue{
       console.log("val")
       console.log(val)
       console.log(this.ws)
+      this.ws.send("game"+val)
+     
     }
     ajax(){
           //   var ajaxHdFn = function(uri:any, data:any, cb:any) {
