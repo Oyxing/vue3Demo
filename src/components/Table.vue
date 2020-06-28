@@ -1,5 +1,5 @@
 <template>
-  <div class="table">
+  <block class="table">
             <slot name="searchview"></slot>
             <el-table
               :border="border?border:false"
@@ -53,7 +53,7 @@
               :layout="layout"
               :total="total">
             </el-pagination>
-  </div>
+  </block>
 </template>
 <script lang="ts">
 
@@ -121,7 +121,7 @@ export default class TableView extends Vue {
     }
     // 当某个单元格被点击时会触发该事件
     cellClick(row:any, column:any, cell:any, event:any){
-        this.handleEvent(event,row,"click",column,cell)
+        this.$emit(event,row,"click",column,cell)
     }
     // 当某个单元格被双击击时会触发该事件
     cellDblclick(row:any, column:any, cell:any, event:any){
@@ -148,7 +148,7 @@ export default class TableView extends Vue {
     rowDblclick(row:any,event:any){
         this.handleEvent(event,row,"row-dblclick","","")
     }
-    // 时间添加
+    // 事件添加
     handleEvent(event:any,row:any,name:string,column:any,cell:any){
 
      if(cell){
